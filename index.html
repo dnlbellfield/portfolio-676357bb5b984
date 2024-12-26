@@ -442,7 +442,7 @@ margin: 0 auto;
        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div class="space-y-6 ">
                       
-            <h1 class="font-bold  
+            <h1 id="dynamic-text" class="font-bold  
                 2xl:text-8xl 
                 xl:text-8xl 
                 lg:text-7xl 
@@ -451,7 +451,7 @@ margin: 0 auto;
                 text-5xl
               
                 relative z-10 float">
-                Sam <br>Dotson
+                Sam  <br><span class="block pt-2">Dotson</span>
             </h1>
 
             <p class="text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl text-gray-600">Office Manager</p>
@@ -778,7 +778,60 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 </script>
+<script>
+    $(document).ready(function () {
+        const firstName = "{{ $portfolio->first_name }}";
+        const lastName = "{{ $portfolio->last_name }}";
+        const maxLength = Math.max(firstName.length, lastName.length);
 
+        let textSizes = {
+            '2xl': 'text-8xl',
+            'xl': 'text-8xl',
+            'lg': 'text-7xl',
+            'md': 'text-6xl',
+            'sm': 'text-6xl',
+        };
+
+        if (maxLength >= 10) {
+            textSizes = {
+                '2xl': 'text-7xl',
+                'xl': 'text-7xl',
+                'lg': 'text-6xl',
+                'md': 'text-6xl',
+                'sm': 'text-5xl',
+            };
+        }
+
+        if (maxLength >= 12) {
+            textSizes = {
+                '2xl': 'text-6xl',
+                'xl': 'text-6xl',
+                'lg': 'text-5xl',
+                'md': 'text-5xl',
+                'sm': 'text-5xl',
+            };
+        }
+
+        if (maxLength >= 13) {
+            textSizes = {
+                '2xl': 'text-6xl',
+                'xl': 'text-6xl',
+                'lg': 'text-5xl',
+                'md': 'text-4xl',
+                'sm': 'text-4xl',
+            };
+        }
+
+        const dynamicClasses = `
+            2xl:${textSizes['2xl']} 
+            xl:${textSizes['xl']} 
+            lg:${textSizes['lg']} 
+            md:${textSizes['md']} 
+            sm:${textSizes['sm']}
+        `;
+
+        $('#dynamic-text').addClass(dynamicClasses);
+    });
 
 
 
