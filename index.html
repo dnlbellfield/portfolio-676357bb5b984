@@ -374,6 +374,54 @@ margin: 0 auto;
   }
 }
 
+    /* Equivalent font sizes for different breakpoints */
+.dynamic-text {
+    font-weight: bold;
+    font-size: 3rem; /* Default size */
+    line-height: 1;
+    position: relative;
+    z-index: 10;
+    float: left;
+}
+
+/* Responsive font sizes */
+@media (min-width: 640px) { /* sm */
+    .dynamic-text {
+        font-size: 3.75rem; /* 6xl */
+    }
+}
+
+@media (min-width: 768px) { /* md */
+    .dynamic-text {
+        font-size: 3.75rem; /* 6xl */
+    }
+}
+
+@media (min-width: 1024px) { /* lg */
+    .dynamic-text {
+        font-size: 4.5rem; /* 7xl */
+    }
+}
+
+@media (min-width: 1280px) { /* xl */
+    .dynamic-text {
+        font-size: 6rem; /* 8xl */
+    }
+}
+
+@media (min-width: 1536px) { /* 2xl */
+    .dynamic-text {
+        font-size: 6rem; /* 8xl */
+    }
+}
+
+/* Block element with top padding */
+.dynamic-text .block {
+    display: block;
+    padding-top: 0.5rem;
+}
+
+
 </style>
 
 </head>
@@ -442,17 +490,10 @@ margin: 0 auto;
        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div class="space-y-6 ">
                       
-            <h1 id="dynamic-text" class="font-bold  
-                2xl:text-8xl 
-                xl:text-8xl 
-                lg:text-7xl 
-                md:text-6xl 
-                sm:text-6xl 
-                text-5xl
-              
-                relative z-10 float">
-                Sam  <br><span class="block pt-2">Dotson</span>
-            </h1>
+            <h1 id="dynamic-text" class="dynamic-text">
+    Sam <br><span class="block pt-2">Dotson</span>
+</h1>
+
 
             <p class="text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl text-gray-600">Office Manager</p>
             <p class="text-xl text-gray-600 max-w-xl  intro-heading">
@@ -779,61 +820,33 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 </script>
 <script>
-    $(document).ready(function () {
-        const firstName = "{{ $portfolio->first_name }}";
-        const lastName = "{{ $portfolio->last_name }}";
-        const maxLength = Math.max(firstName.length, lastName.length);
+    $(document).ready(function() {
+        function adjustFontSize() {
+            var windowWidth = $(window).width();
+            var fontSize;
 
-        let textSizes = {
-            '2xl': 'text-8xl',
-            'xl': 'text-8xl',
-            'lg': 'text-7xl',
-            'md': 'text-6xl',
-            'sm': 'text-6xl',
-        };
+            if (windowWidth >= 1536) { // 2xl breakpoint
+                fontSize = '6rem';
+            } else if (windowWidth >= 1280) { // xl breakpoint
+                fontSize = '6rem';
+            } else if (windowWidth >= 1024) { // lg breakpoint
+                fontSize = '4.5rem';
+            } else if (windowWidth >= 768) { // md breakpoint
+                fontSize = '3.75rem';
+            } else if (windowWidth >= 640) { // sm breakpoint
+                fontSize = '3.75rem';
+            } else {
+                fontSize = '3rem'; // Default size
+            }
 
-        if (maxLength >= 10) {
-            textSizes = {
-                '2xl': 'text-7xl',
-                'xl': 'text-7xl',
-                'lg': 'text-6xl',
-                'md': 'text-6xl',
-                'sm': 'text-5xl',
-            };
+            $('#dynamic-text').css('font-size', fontSize);
         }
 
-        if (maxLength >= 12) {
-            textSizes = {
-                '2xl': 'text-6xl',
-                'xl': 'text-6xl',
-                'lg': 'text-5xl',
-                'md': 'text-5xl',
-                'sm': 'text-5xl',
-            };
-        }
-
-        if (maxLength >= 13) {
-            textSizes = {
-                '2xl': 'text-6xl',
-                'xl': 'text-6xl',
-                'lg': 'text-5xl',
-                'md': 'text-4xl',
-                'sm': 'text-4xl',
-            };
-        }
-
-        const dynamicClasses = `
-            2xl:${textSizes['2xl']} 
-            xl:${textSizes['xl']} 
-            lg:${textSizes['lg']} 
-            md:${textSizes['md']} 
-            sm:${textSizes['sm']}
-        `;
-
-        $('#dynamic-text').addClass(dynamicClasses);
+        // Adjust font size on page load and window resize
+        adjustFontSize();
+        $(window).resize(adjustFontSize);
     });
-
-
+</script>
 
 
 </body>
